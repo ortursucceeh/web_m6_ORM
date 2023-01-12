@@ -2,11 +2,11 @@ import sqlite3
 
 def create_db():
     # read file with script for creating database
-    with open('school.sql', 'r') as f:
+    with open('db_manipulations/school.sql', 'r') as f:
         sql = f.read()
 
     # create connection with db (if db file doesn't exists, it will be created)
-    with sqlite3.connect('school.db') as con:
+    with sqlite3.connect('database/school.db') as con:
         cur = con.cursor()
         # execute script from file to create db
         cur.executescript(sql)

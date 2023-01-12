@@ -1,5 +1,5 @@
 from datetime import datetime
-from random import randint, choice
+from random import randint
 import sqlite3
 
 import faker
@@ -38,7 +38,7 @@ def prepare_data(classes, students, teachers, subjects) -> tuple():
     for_grades = []
 
     for _ in range(NUMBER_GRADES):
-        grade = randint(40, 100)
+        grade = randint(60, 100)
         date = datetime(2022, 12, randint(1, 31)).date()
         subject_id = randint(1, NUMBER_SUBJECTS)
         student_id = randint(1, NUMBER_STUDENTS)
@@ -49,23 +49,23 @@ def prepare_data(classes, students, teachers, subjects) -> tuple():
 
 def insert_data_to_db(classes, students, teachers, subjects, grades) -> None:
 
-    with sqlite3.connect('school.db') as con:
+    with sqlite3.connect('database/school.db') as con:
 
         cur = con.cursor()
 
-        sql_to_classes = """INSERT INTO classes(class_name)
+        sql_to_classes = """INSERT INTO classes(name)
                                VALUES (?)"""
         cur.executemany(sql_to_classes, classes)
 
-        sql_to_students = """INSERT INTO students(student_name, class_id)
+        sql_to_students = """INSERT INTO students(fullname, class_id)
                                VALUES (?, ?)"""
         cur.executemany(sql_to_students, students)
 
-        sql_to_teachers = """INSERT INTO teachers(teacher_name)
+        sql_to_teachers = """INSERT INTO teachers(fullname)
                               VALUES (?)"""
         cur.executemany(sql_to_teachers, teachers)
 
-        sql_to_subjects = """INSERT INTO subjects(subject_name, teacher_id)
+        sql_to_subjects = """INSERT INTO subjects(name, teacher_id)
                                VALUES (?, ?)"""
         cur.executemany(sql_to_subjects, subjects)
 
